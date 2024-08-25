@@ -4,11 +4,12 @@ const express = require('express');
 // const userValidation = require('../../validations/user.validation');
 // const userController = require('../../controllers/user.controller');
 const { careerController } = require('../../controllers');
+const { careerValidation } = require('../../validations');
 
 const router = express.Router();
 
 router.get('/job-list', careerController.getJobList);
-router.post('/job-list', careerController.postJob);
+router.post('/job-list', careerValidation.postJob, careerController.postJob);
 router.get('/job-list/:id', careerController.getJobById);
 
 module.exports = router;
