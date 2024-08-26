@@ -9,6 +9,7 @@ const { careerValidation } = require('../../validations');
 const router = express.Router();
 
 router.get('/job-list', careerController.getJobList);
+router.post('/job-list/apply', validate(careerValidation.jobApplicantValidation), careerController.applyForJob);
 router.post('/job-list', validate(careerValidation.postJob), careerController.postJob);
 router.get('/job-list/:id', careerController.getJobById);
 router.put('/job-list/:id', validate(careerController.updateJob), careerController.updateJob);
@@ -391,6 +392,100 @@ module.exports = router;
  *                 workingDays:
  *                   type: string
  *                   description: Working days (e.g., "Monday - Friday")
+ *       "400":
+ *         $ref: '#/components/responses/BadRequest'
+ *       "404":
+ *         $ref: '#/components/responses/NotFound'
+ *       "500":
+ *         $ref: '#/components/responses/InternalServerError'
+ */
+
+/**
+ * @swagger
+ * /career/job-list/apply:
+ *   post:
+ *     summary: Apply for a job
+ *     description: Submit an application for a specific job by providing personal and job-related information.
+ *     tags: [Jobs]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - firstName
+ *               - lastName
+ *               - email
+ *               - phone
+ *               - resume
+ *               - desiredSalary
+ *               - startDate
+ *               - jobId
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *                 description: The applicant's first name.
+ *               lastName:
+ *                 type: string
+ *                 description: The applicant's last name.
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: The applicant's email address.
+ *               phone:
+ *                 type: string
+ *                 description: The applicant's phone number.
+ *               currentCompany:
+ *                 type: string
+ *                 description: The current company of the applicant (optional).
+ *               resume:
+ *                 type: string
+ *                 description: A link or path to the applicant's resume.
+ *               coverLetter:
+ *                 type: string
+ *                 description: A cover letter provided by the applicant (optional).
+ *               links:
+ *                 type: object
+ *                 description: Links to the applicant's professional profiles.
+ *                 properties:
+ *                   linkedIn:
+ *                     type: string
+ *                     format: uri
+ *                     description: LinkedIn profile URL (optional).
+ *                   twitter:
+ *                     type: string
+ *                     format: uri
+ *                     description: Twitter profile URL (optional).
+ *                   github:
+ *                     type: string
+ *                     format: uri
+ *                     description: GitHub profile URL (optional).
+ *                   portfolioUrl:
+ *                     type: string
+ *                     format: uri
+ *                     description: Portfolio URL (optional).
+ *               desiredSalary:
+ *                 type: number
+ *                 description: The desired salary of the applicant.
+ *               startDate:
+ *                 type: string
+ *                 format: date
+ *                 description: The date when the applicant can start.
+ *               jobId:
+ *                 type: string
+ *                 description: The ID of the job the applicant is applying for.
+ *     responses:
+ *       "201":
+ *         description: Successfully applied for the job
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Successfully applied for the job
  *       "400":
  *         $ref: '#/components/responses/BadRequest'
  *       "404":

@@ -15,23 +15,31 @@ const getJobList = catchAsync(async (req, res) => {
 });
 
 const getJobById = catchAsync(async (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
   const job = await careerService.getJobById(id);
   res.status(httpStatus.OK).send(job);
 });
 
-
-const updateJob = catchAsync(async (req, res, next) => {
+const updateJob = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const jobData = req.body; 
+  const jobData = req.body;
   const updatedJob = await careerService.updateJob(id, jobData);
   res.status(httpStatus.OK).send(updatedJob);
 });
 
+const applyForJob = catchAsync(async (req, res) => {
+  const jobData = req.body;
+  const { jobId } = jobData;
+
+  await careerService.applyForJob(jobId, jobData);
+
+  res.status(httpStatus.CREATED).json({ message: 'Successfully applied for the job' });
+});
 
 module.exports = {
   postJob,
   getJobList,
   getJobById,
-  updateJob
+  updateJob,
+  applyForJob,
 };
