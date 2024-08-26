@@ -15,13 +15,23 @@ const getJobList = catchAsync(async (req, res) => {
 });
 
 const getJobById = catchAsync(async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   const job = await careerService.getJobById(id);
   res.status(httpStatus.OK).send(job);
 });
+
+
+const updateJob = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  const jobData = req.body; 
+  const updatedJob = await careerService.updateJob(id, jobData);
+  res.status(httpStatus.OK).send(updatedJob);
+});
+
 
 module.exports = {
   postJob,
   getJobList,
   getJobById,
+  updateJob
 };

@@ -11,6 +11,7 @@ const router = express.Router();
 router.get('/job-list', careerController.getJobList);
 router.post('/job-list', validate(careerValidation.postJob), careerController.postJob);
 router.get('/job-list/:id', careerController.getJobById);
+router.put('/job-list/:id', validate(careerController.updateJob), careerController.updateJob);
 
 module.exports = router;
 
@@ -272,6 +273,128 @@ module.exports = router;
  *               properties:
  *                 message:
  *                   type: string
+ *       "500":
+ *         $ref: '#/components/responses/InternalServerError'
+ */
+
+/**
+ * @swagger
+ * /career/job-list/{id}:
+ *   put:
+ *     summary: Update an existing job posting
+ *     description: Update the details of an existing job posting by its ID. Only admins can update job postings.
+ *     tags: [Jobs]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The unique identifier of the job to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               location:
+ *                 type: string
+ *               type:
+ *                 type: string
+ *               department:
+ *                 type: string
+ *               lastDate:
+ *                 type: string
+ *                 format: date
+ *               jobDescription:
+ *                 type: string
+ *               responsibilities:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               requirements:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               benefits:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               vacancy:
+ *                 type: integer
+ *               jobType:
+ *                 type: string
+ *               workingDays:
+ *                 type: string
+ *                 description: Working days (e.g., "Monday - Friday")
+ *             example:
+ *               title: Software Engineer
+ *               location: New York
+ *               type: Full-time
+ *               department: Engineering
+ *               lastDate: 2024-09-30
+ *               jobDescription: Responsible for developing and maintaining software applications.
+ *               responsibilities:
+ *                 - Write clean and efficient code
+ *                 - Collaborate with team members
+ *               requirements:
+ *                 - Proficiency in JavaScript
+ *                 - Experience with React
+ *               benefits:
+ *                 - Health insurance
+ *                 - Flexible working hours
+ *               vacancy: 2
+ *               jobType: Full-time
+ *               workingDays: Monday - Friday
+ *     responses:
+ *       "200":
+ *         description: Successfully updated the job posting
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 title:
+ *                   type: string
+ *                 location:
+ *                   type: string
+ *                 type:
+ *                   type: string
+ *                 department:
+ *                   type: string
+ *                 lastDate:
+ *                   type: string
+ *                   format: date
+ *                 jobDescription:
+ *                   type: string
+ *                 responsibilities:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                 requirements:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                 benefits:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                 vacancy:
+ *                   type: integer
+ *                 jobType:
+ *                   type: string
+ *                 workingDays:
+ *                   type: string
+ *                   description: Working days (e.g., "Monday - Friday")
+ *       "400":
+ *         $ref: '#/components/responses/BadRequest'
+ *       "404":
+ *         $ref: '#/components/responses/NotFound'
  *       "500":
  *         $ref: '#/components/responses/InternalServerError'
  */

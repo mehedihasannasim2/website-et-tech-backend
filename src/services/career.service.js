@@ -45,8 +45,27 @@ const getJobById = async (id) => {
   }
 };
 
+const updateJob = async (id, jobData) => {
+  try {
+    const updatedJob = await Job.findByIdAndUpdate(id, jobData, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updatedJob) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Job not found');
+    }
+
+    return updatedJob;
+  } catch (error) {
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Failed to update job');
+  }
+};
+
+
 module.exports = {
   getJobList,
   postJob,
   getJobById,
+  updateJob
 };
