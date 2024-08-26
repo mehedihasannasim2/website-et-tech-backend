@@ -27,9 +27,19 @@ const updateJob = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(updatedJob);
 });
 
+const applyForJob = catchAsync(async (req, res) => {
+  const jobData = req.body;
+  const { jobId } = jobData;
+
+  await careerService.applyForJob(jobId, jobData);
+
+  res.status(httpStatus.CREATED).json({ message: 'Successfully applied for the job' });
+});
+
 module.exports = {
   postJob,
   getJobList,
   getJobById,
   updateJob,
+  applyForJob,
 };

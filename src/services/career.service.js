@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
-const { Job } = require('../models');
+const { Job, JobApplicant } = require('../models');
 
 /**
  * Creates a new job and saves it to the database.
@@ -62,9 +62,28 @@ const updateJob = async (id, jobData) => {
   }
 };
 
+const applyForJob = async (id, applicantData) => {
+  try {
+    const job = await Job.findById(id);
+    if (!job) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Job not found');
+    }
+
+    const applicantWithJobRef = { ...applicantData, job: id };
+
+    const newApplicant = new JobApplicant(applicantWithJobRef);
+
+    await newApplicant.save();
+    return newApplicant;
+  } catch (error) {
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Failed to apply for job');
+  }
+};
+
 module.exports = {
   getJobList,
   postJob,
   getJobById,
   updateJob,
+  applyForJob,
 };
