@@ -62,10 +62,9 @@ const updateJob = async (id, jobData) => {
   }
 };
 
-
 module.exports = {
   getJobList,
   postJob,
   getJobById,
-  updateJob
+  updateJob,
 };
