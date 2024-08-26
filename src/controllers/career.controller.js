@@ -15,7 +15,7 @@ const getJobList = catchAsync(async (req, res) => {
 });
 
 const getJobById = catchAsync(async (req, res) => {
-  const id = req.params.id;
+  const { id } = req.params;
   const job = await careerService.getJobById(id);
   res.status(httpStatus.OK).send(job);
 });
