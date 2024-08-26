@@ -8,10 +8,11 @@ const { careerValidation } = require('../../validations');
 
 const router = express.Router();
 
+router.get('/job-list/:id', careerController.getJobById);
+router.get('/applicants/:id', careerController.getApplicantList);
 router.get('/job-list', careerController.getJobList);
 router.post('/job-list/apply', validate(careerValidation.jobApplicantValidation), careerController.applyForJob);
 router.post('/job-list', validate(careerValidation.postJob), careerController.postJob);
-router.get('/job-list/:id', careerController.getJobById);
 router.put('/job-list/:id', validate(careerController.updateJob), careerController.updateJob);
 
 module.exports = router;
@@ -486,6 +487,81 @@ module.exports = router;
  *                 message:
  *                   type: string
  *                   example: Successfully applied for the job
+ *       "400":
+ *         $ref: '#/components/responses/BadRequest'
+ *       "404":
+ *         $ref: '#/components/responses/NotFound'
+ *       "500":
+ *         $ref: '#/components/responses/InternalServerError'
+ */
+
+/**
+ * @swagger
+ * /career/applicants/{id}:
+ *   get:
+ *     summary: Retrieve a list of applicants for a specific job
+ *     description: Fetches a list of applicants who have applied for the job with the specified ID.
+ *     tags: [Jobs]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the job for which to retrieve applicants.
+ *     responses:
+ *       "200":
+ *         description: A list of applicants
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   firstName:
+ *                     type: string
+ *                     description: The first name of the applicant.
+ *                   lastName:
+ *                     type: string
+ *                     description: The last name of the applicant.
+ *                   email:
+ *                     type: string
+ *                     description: The email of the applicant.
+ *                   phone:
+ *                     type: string
+ *                     description: The phone number of the applicant.
+ *                   currentCompany:
+ *                     type: string
+ *                     description: The current company of the applicant.
+ *                   resume:
+ *                     type: string
+ *                     description: A link or path to the applicant's resume.
+ *                   coverLetter:
+ *                     type: string
+ *                     description: The applicant's cover letter.
+ *                   links:
+ *                     type: object
+ *                     properties:
+ *                       linkedIn:
+ *                         type: string
+ *                         description: LinkedIn profile URL.
+ *                       twitter:
+ *                         type: string
+ *                         description: Twitter profile URL.
+ *                       github:
+ *                         type: string
+ *                         description: GitHub profile URL.
+ *                       portfolioUrl:
+ *                         type: string
+ *                         description: Portfolio URL.
+ *                   desiredSalary:
+ *                     type: number
+ *                     description: The desired salary of the applicant.
+ *                   startDate:
+ *                     type: string
+ *                     format: date
+ *                     description: The date when the applicant can start.
  *       "400":
  *         $ref: '#/components/responses/BadRequest'
  *       "404":
