@@ -80,10 +80,20 @@ const applyForJob = async (id, applicantData) => {
   }
 };
 
+const getApplicantList = async (jobId) => {
+  try {
+    const applicants = await JobApplicant.find({ job: jobId });
+    return applicants;
+  } catch (error) {
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Failed to get applicants');
+  }
+};
+
 module.exports = {
   getJobList,
   postJob,
   getJobById,
   updateJob,
   applyForJob,
+  getApplicantList,
 };
