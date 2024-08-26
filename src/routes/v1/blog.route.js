@@ -15,7 +15,6 @@ router.put('/blog-list/:id', validate(blogController.updateBlog), blogController
 
 module.exports = router;
 
-
 /**
  * @swagger
  * tags:
