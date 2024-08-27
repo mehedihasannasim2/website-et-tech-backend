@@ -11,11 +11,7 @@ const { PartnershipApplicant } = require('../models');
  */
 
 const applyForPartnership = async (id, applicantData) => {
-  try {
-    const partnership = await PartnershipApplicant.findById(id);
-    if (!partnership) {
-      throw new ApiError(httpStatus.NOT_FOUND, 'Partnership not found');
-    }
+
 
     const applicantWithPartnershipRef = { ...applicantData, partnership: id };
 
@@ -23,9 +19,7 @@ const applyForPartnership = async (id, applicantData) => {
 
     await newApplicant.save();
     return newApplicant;
-  } catch (error) {
-    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Failed to apply for Partnership');
-  }
+
 };
 
 const getApplicantList = async (partnershipId) => {

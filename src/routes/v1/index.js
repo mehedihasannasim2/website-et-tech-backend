@@ -5,6 +5,7 @@ const docsRoute = require('./docs.route');
 const config = require('../../config/config');
 const careerRoute = require('./career.route');
 const blogRoute = require('./blog.route');
+const partnershipRoute = require('./partnership.route');
 
 const router = express.Router();
 
@@ -24,6 +25,10 @@ const defaultRoutes = [
   {
     path: '/blogs',
     route: blogRoute,
+  },
+  {
+    path: '/partnership',
+    route: partnershipRoute,
   },
 ];
 
